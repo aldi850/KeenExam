@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeenExam - Platform Ujian Online</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #5a75f1;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --danger: #f72585;
+            --danger-light: #f9499b;
+            --warning: #f8961e;
+            --warning-light: #f9a63e;
+            --success: #4ad66d;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 16px;
+            --box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        body { 
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: var(--border-radius); 
+            box-shadow: var(--box-shadow); 
+            color: var(--dark); 
+            width: 100%; 
+            max-width: 550px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.97);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76,201,240,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            animation: rotate 15s linear infinite;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .logo i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        h2 { 
+            font-weight: 800; 
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+        
+        p.subtitle {
+            color: var(--gray);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        
+        .feature {
+            background: rgba(67, 97, 238, 0.1);
+            padding: 12px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feature i {
+            font-size: 0.9rem;
+        }
+        
+        .input-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 17px 20px 17px 55px; 
+            font-size: 1rem; 
+            border-radius: var(--border-radius); 
+            border: 2px solid var(--light-gray);
+            transition: var(--transition);
+            background-color: #f8f9fa;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+            outline: none;
+            background-color: white;
+        }
+        
+        button { 
+            width: 100%; 
+            padding: 17px; 
+            font-size: 1.05rem; 
+            border-radius: var(--border-radius); 
+            border: none;
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(to right, var(--danger), var(--danger-light));
+            color: white;
+            box-shadow: 0 6px 20px rgba(247, 37, 133, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(247, 37, 133, 0.4);
+        }
+        
+        .btn-danger::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: var(--transition);
+        }
+        
+        .btn-danger:hover::after {
+            left: 100%;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(to right, var(--warning), var(--warning-light));
+            color: white;
+            box-shadow: 0 6px 20px rgba(248, 150, 30, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(248, 150, 30, 0.4);
+        }
+        
+        .btn-warning::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: var(--transition);
+        }
+        
+        .btn-warning:hover::after {
+            left: 100%;
+        }
+        
+        .alert { 
+            background: #fff3cd; 
+            color: #856404; 
+            padding: 16px; 
+            border-radius: var(--border-radius); 
+            font-weight: 500; 
+            display: none;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #ffeeba;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        iframe { 
+            width: 100%; 
+            height: 70vh; 
+            border: 2px solid var(--light-gray); 
+            border-radius: var(--border-radius); 
+            background: white; 
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+        
+        iframe:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .button-group { 
+            display: flex; 
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .button-group button {
+            flex: 1;
+        }
+        
+        .timer { 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            margin-bottom: 1.5rem; 
+            color: var(--danger);
+            text-align: center;
+            background: #fff5f5;
+            padding: 14px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--danger);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        #blocked-page { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: var(--border-radius); 
+            color: var(--dark); 
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--box-shadow);
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        #blocked-page i {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--danger), #ff6b9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shake 0.5s ease-in-out infinite alternate;
+        }
+        
+        #blocked-page h2 {
+            color: var(--danger);
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+        }
+        
+        #unblock-time {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            font-weight: 700;
+            color: var(--danger);
+            font-size: 1.3rem;
+            border: 2px dashed #f8d7da;
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        .exam-header {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 2.2rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+        
+        .info-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+            margin-top: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        /* Enhanced Exam Page Container */
+        .exam-container {
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: var(--border-radius); 
+            box-shadow: var(--box-shadow); 
+            color: var(--dark); 
+            width: 100%; 
+            max-width: 800px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.97);
+            position: relative;
+            overflow: hidden;
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .exam-container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76,201,240,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            animation: rotate 15s linear infinite;
+        }
+        
+        .exam-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .exam-progress {
+            background: rgba(67, 97, 238, 0.1);
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .security-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(247, 37, 133, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(-3px); }
+            100% { transform: translateX(3px); }
+        }
+        
+        @media (max-width: 768px) {
+            .exam-container {
+                padding: 1.5rem;
+            }
+            
+            .timer {
+                font-size: 1.2rem;
+            }
+            
+            .exam-header {
+                font-size: 1.8rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container, .exam-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .logo i {
+                font-size: 3.5rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            p.subtitle {
+                font-size: 0.95rem;
+                max-width: 100%;
+            }
+            
+            .features {
+                gap: 10px;
+            }
+            
+            .feature {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .timer {
+                font-size: 1.1rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="login-page">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h2>KeenExam</h2>
+            <p class="subtitle">Platform Ujian Online Terintegrasi dengan Sistem Pengawasan Cerdas untuk Menjamin Kejujuran Akademik</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <span>Pengawasan Cerdas</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-stopwatch"></i>
+                <span>Timer Otomatis</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-user-lock"></i>
+                <span>Deteksi Kecurangan</span>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-link"></i>
+            <input type="text" id="examLink" placeholder="Tempel link ujian disini...">
+        </div>
+        
+        <button class="btn-primary" onclick="startExam()">
+            <i class="fas fa-play"></i> Mulai Ujian Sekarang
+        </button>
+        
+        <p class="info-text">
+            <i class="fas fa-info-circle"></i> Pastikan Anda tidak meninggalkan halaman ujian selama mengerjakan. 
+            Sistem akan mencatat setiap aktivitas mencurigakan.
+        </p>
+    </div>
+
+    <div class="exam-container" id="exam-page">
+        <div class="security-indicator" id="securityIndicator">
+            <i class="fas fa-lock"></i>
+            <span>Keamanan Ujian Aktif</span>
+        </div>
+        
+        <div class="exam-controls">
+            <div class="exam-progress">
+                <i class="fas fa-spinner fa-pulse"></i>
+                <span>Ujian Sedang Berlangsung</span>
+            </div>
+            <div class="timer" id="timerDisplay"><i class="fas fa-clock"></i> Waktu tersisa: 90:00</div>
+        </div>
+        
+        <h2 class="exam-header">Ujian Online</h2>
+        <div class="alert" id="alertMessage"></div>
+        
+        <iframe id="exam-frame" title="Exam Content"></iframe>
+
+        <div class="button-group">
+            <button class="btn-danger" onclick="logoutExam()">
+                <i class="fas fa-sign-out-alt"></i> Keluar Ujian
+            </button>
+            <button class="btn-warning" onclick="requestHelp()">
+                <i class="fas fa-question-circle"></i> Minta Bantuan
+            </button>
+        </div>
+        
+        <div class="info-text">
+            <i class="fas fa-info-circle"></i> Sistem akan otomatis menyimpan jawaban Anda setiap 30 detik.
+        </div>
+    </div>
+
+    <div id="blocked-page" style="display:none;">
+        <i class="fas fa-ban"></i>
+        <h2>Akses Diblokir!</h2>
+        <p id="violation-message">Anda telah melanggar aturan ujian dengan meninggalkan halaman ujian berulang kali.</p>
+        <p>Akses akan dibuka kembali pada:</p>
+        <h3 id="unblock-time"></h3>
+        <p>Silakan hubungi pengawas ujian melalui email: <strong>pengawas@keenexam.id</strong></p>
+    </div>
+
+    <script>
+        let warningCount = 0;
+        let timeRemaining = 90 * 60;
+        let timer;
+        let isExamActive = false;
+        let fullscreenAttempts = 0;
+        let copyAttempts = 0;
+        let tabSwitchAttempts = 0;
+
+        // Enhanced security event listeners
+        document.addEventListener('contextmenu', function(e) {
+            if (isExamActive) {
+                e.preventDefault();
+                showAlert("Aksi ini diblokir selama ujian!");
+            }
+        });
+
+        document.addEventListener('copy', function(e) {
+            if (isExamActive) {
+                e.preventDefault();
+                copyAttempts++;
+                showAlert(`Peringatan ${copyAttempts}/3: Dilarang menyalin soal ujian!`);
+                
+                if (copyAttempts >= 3) {
+                    blockUser(6, "Menyalin soal ujian"); // 6-hour block for copying
+                }
+            }
+        });
+
+        document.addEventListener('cut', function(e) {
+            if (isExamActive) {
+                e.preventDefault();
+                copyAttempts++;
+                showAlert(`Peringatan ${copyAttempts}/3: Dilarang memotong teks ujian!`);
+                
+                if (copyAttempts >= 3) {
+                    blockUser(6, "Memotong teks ujian"); // 6-hour block for cutting
+                }
+            }
+        });
+
+        // Tab switching detection
+        window.addEventListener('blur', function() {
+            if (isExamActive) {
+                tabSwitchAttempts++;
+                showAlert(`Peringatan ${tabSwitchAttempts}/3: Jangan beralih dari halaman ujian!`);
+                
+                if (tabSwitchAttempts >= 3) {
+                    blockUser(6, "Membuka tab lain"); // 6-hour block for tab switching
+                }
+            }
+        });
+
+        // Fullscreen detection
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            if (!document.fullscreenElement && isExamActive) {
+                fullscreenAttempts++;
+                showAlert(`Peringatan: Jangan keluar dari mode layar penuh! (Percobaan ${fullscreenAttempts}/3)`);
+                
+                if (fullscreenAttempts >= 3) {
+                    blockUser(12, "Keluar dari mode fullscreen"); // 12-hour block for exiting fullscreen
+                } else {
+                    requestFullscreen();
+                }
+            }
+        }
+
+        function blockUser(hours, violationType) {
+            let blockTime = new Date().getTime() + (hours * 60 * 60 * 1000);
+            localStorage.setItem("block_until", blockTime);
+            localStorage.setItem("violation_type", violationType);
+            
+            showBlockedPage();
+            exitFullscreen();
+        }
+
+        function showBlockedPage() {
+            let blockUntil = new Date(parseInt(localStorage.getItem("block_until")));
+            let violationType = localStorage.getItem("violation_type") || "Pelanggaran aturan ujian";
+            
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById("exam-page").style.display = "none";
+            document.getElementById("blocked-page").style.display = "block";
+            
+            document.getElementById("unblock-time").innerText = blockUntil.toLocaleString();
+            document.getElementById("violation-message").innerText = 
+                `Anda telah melanggar aturan ujian: ${violationType}`;
+        }
+
+        function requestFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+        function startExam() {
+            let examLink = document.getElementById("examLink").value.trim();
+            let blockUntil = localStorage.getItem("block_until");
+
+            if (blockUntil && new Date().getTime() < blockUntil) {
+                showBlockedPage();
+                return;
+            }
+
+            if (!examLink.startsWith("http")) {
+                showAlert("Masukkan link ujian yang valid!");
+                return;
+            }
+
+            // Reset counters
+            warningCount = 0;
+            copyAttempts = 0;
+            tabSwitchAttempts = 0;
+            fullscreenAttempts = 0;
+            isExamActive = true;
+            
+            localStorage.setItem("current_exam", examLink);
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById("exam-page").style.display = "block";
+            document.getElementById("exam-frame").src = examLink;
+            startTimer();
+            requestFullscreen();
+            
+            // Add security event listeners to iframe
+            const iframe = document.getElementById("exam-frame");
+            iframe.onload = function() {
+                try {
+                    iframe.contentDocument.addEventListener('contextmenu', function(e) {
+                        e.preventDefault();
+                        showAlert("Aksi ini diblokir selama ujian!");
+                    });
+                    
+                    iframe.contentDocument.addEventListener('copy', function(e) {
+                        e.preventDefault();
+                        copyAttempts++;
+                        showAlert(`Peringatan ${copyAttempts}/3: Dilarang menyalin soal ujian!`);
+                        if (copyAttempts >= 3) blockUser(6, "Menyalin soal ujian");
+                    });
+                    
+                    iframe.contentDocument.addEventListener('cut', function(e) {
+                        e.preventDefault();
+                        copyAttempts++;
+                        showAlert(`Peringatan ${copyAttempts}/3: Dilarang memotong teks ujian!`);
+                        if (copyAttempts >= 3) blockUser(6, "Memotong teks ujian");
+                    });
+                } catch (e) {
+                    console.log("Security measures applied to iframe");
+                }
+            };
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    showAlert("Waktu ujian telah habis!");
+                    logoutExam();
+                } else {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                    
+                    if (timeRemaining === 300) {
+                        document.getElementById("timerDisplay").style.animation = "pulse 0.8s infinite alternate";
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeRemaining / 60);
+            let seconds = timeRemaining % 60;
+            document.getElementById("timerDisplay").innerHTML = `<i class="fas fa-clock"></i> Waktu tersisa: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            
+            if (timeRemaining < 600) {
+                document.getElementById("timerDisplay").style.color = "var(--danger)";
+                document.getElementById("timerDisplay").style.background = "#fff5f5";
+            }
+        }
+
+        function logoutExam() {
+            let confirmLogout = confirm("Apakah Anda yakin ingin keluar dari ujian? Semua progress akan hilang.");
+            if (confirmLogout) {
+                localStorage.removeItem("current_exam");
+                isExamActive = false;
+                exitFullscreen();
+                location.reload();
+            }
+        }
+
+        function requestHelp() {
+            const helpBtn = document.querySelector(".btn-warning");
+            helpBtn.style.transform = "scale(0.95)";
+            setTimeout(() => {
+                helpBtn.style.transform = "scale(1)";
+            }, 200);
+            
+            alert("Untuk bantuan teknis:\n\nEmail: help@keenexam.id\nWhatsApp: +62 812-3456-7890\n\nTim kami akan merespon dalam 5 menit.");
+        }
+
+        function showAlert(message) {
+            const alert = document.getElementById("alertMessage");
+            alert.innerText = message;
+            alert.style.display = "block";
+            setTimeout(() => {
+                alert.style.display = "none";
+            }, 3000);
+        }
+
+        window.onload = function() {
+            let blockUntil = localStorage.getItem("block_until");
+            if (blockUntil && new Date().getTime() < blockUntil) {
+                showBlockedPage();
+            }
+        };
+    </script>
+
+</body>
+</html>
